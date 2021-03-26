@@ -8,9 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Entity
 @Table(name="usuario")
@@ -20,7 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Usuario {
     @Id
-    private String siape;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -28,6 +26,7 @@ public class Usuario {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "foto")
-    private Blob foto;
+    @Lob
+    @Column(name = "foto", columnDefinition = "LONGBLOB")
+    private byte[] foto;
 }
