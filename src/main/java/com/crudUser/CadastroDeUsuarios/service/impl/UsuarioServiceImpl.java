@@ -52,6 +52,26 @@ public class UsuarioServiceImpl implements UsuarioService {
         return this.repository.findAll(pageable).map(this.mapper::toDto);
     }
 
+    @Override
+    public void deleteUsuario(Long id) {
+        this.repository.delete(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_REGISTRO_NAO_ENCONTRADO, null)));
+    }
+
+    @Override
+    public UsuarioDTO editaUsuario(Long id, UsuarioDTO toEdit) throws SQLException {
+        if(Objects.isNull(id) || Objects.isNull(toEdit.getId()) || (!Objects.equals(id, toEdit.getId()))){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.erroCampoObrigatorio("id"), null);
+        }
+
+        repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_REGISTRO_NAO_ENCONTRADO, null));
+
+        if(Objects.nonNull(toEdit.getFoto())){
+            verificaTamanhoArquivo(new SerialBlob(Base64.getDecoder().decode(toEdit.getFoto())));
+        }
+
+        return mapper.toDto(repository.save(mapper.toDomain(toEdit)));
+    }
+
     private void verificaTamanhoArquivo(Blob foto) throws SQLException {
         if(Objects.nonNull(foto) && ((foto.length()/1000) > 10000)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_TAMANHO_ARQUIVO_EXCEDIDO_OU_FORMATO, null);

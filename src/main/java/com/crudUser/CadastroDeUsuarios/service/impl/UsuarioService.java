@@ -26,4 +26,23 @@ public interface UsuarioService {
      *
      */
     Page<UsuarioDTO> listarPagina(Pageable pageable);
+
+    /**
+     * Deleta o usuario com o id especificado
+     *
+     * @params: id Identificador do usuário a ser removido
+     * @return: void
+     *
+     */
+    void deleteUsuario(Long id);
+
+    /**
+     * PUT: /api/usuario/{id} Edita um usuário
+     *
+     * @params: id Id do usuario a ser editado
+     * @params: toEdit dados que serão persistidos
+     * @return: o usuario persistido
+     *
+     */
+    UsuarioDTO editaUsuario(Long id, UsuarioDTO toEdit) throws SQLException;
 }
