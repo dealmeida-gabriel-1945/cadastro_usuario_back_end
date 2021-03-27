@@ -1,4 +1,4 @@
-package com.crudUser.CadastroDeUsuarios.service.impl;
+package com.crudUser.CadastroDeUsuarios.service;
 
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
 import org.springframework.data.domain.Page;
@@ -45,4 +45,13 @@ public interface UsuarioService {
      *
      */
     UsuarioDTO editaUsuario(Long id, UsuarioDTO toEdit) throws SQLException;
+
+    /**
+     * GET: /api/usuario/{id}/foto Busca o base64 da foto do usuário especificado
+     *
+     * @params: id Identificador do usuário
+     * @return: String contendo o base64 da foto
+     *
+     */
+    String buscaFoto(Long id);
 }

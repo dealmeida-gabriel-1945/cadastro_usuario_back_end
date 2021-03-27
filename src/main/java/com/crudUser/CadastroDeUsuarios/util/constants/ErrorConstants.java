@@ -2,7 +2,7 @@ package com.crudUser.CadastroDeUsuarios.util.constants;
 
 public class ErrorConstants {
     public static final String ERRO_TAMANHO_ARQUIVO_EXCEDIDO_OU_FORMATO = "O tamanho do arquivo da foto é de até 10MB.";
-    public static final String ERRO_REGISTRO_NAO_ENCONTRADO = "O registro não consta em nosso bnco de dados.";
+    public static final String ERRO_REGISTRO_NAO_ENCONTRADO = "O registro não consta em nosso banco de dados.";
 
     //ERRO NULL OBRIGATORIO
     public static final String ERRO_CAMPO_OBRIGATORIO_PT1 = "O campo de ";
