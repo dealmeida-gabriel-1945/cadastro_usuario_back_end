@@ -1,16 +1,13 @@
 package com.crudUser.CadastroDeUsuarios.web;
 
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
-import com.crudUser.CadastroDeUsuarios.service.impl.UsuarioService;
+import com.crudUser.CadastroDeUsuarios.service.UsuarioService;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.HeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -48,6 +45,18 @@ public class UsuarioResource {
     @GetMapping
     public ResponseEntity<Page<UsuarioDTO>> listarPagina(Pageable pageable) throws IOException {
         return ResponseEntity.ok(this.service.listarPagina(pageable));
+    }
+
+    /**
+     * GET: /api/usuario/{id}/foto Busca o base64 da foto do usuário especificado
+     *
+     * @params: id Identificador do usuário
+     * @return: String contendo o base64 da foto
+     *
+     */
+    @GetMapping("/{id}/foto")
+    public ResponseEntity<String> buscaFoto(@PathVariable("id") Long id) throws IOException {
+        return ResponseEntity.ok(this.service.buscaFoto(id));
     }
 
     /**

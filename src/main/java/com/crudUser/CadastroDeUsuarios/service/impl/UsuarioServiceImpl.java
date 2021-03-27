@@ -4,26 +4,25 @@ import com.crudUser.CadastroDeUsuarios.datashape.domain.Usuario;
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
 import com.crudUser.CadastroDeUsuarios.mapper.UsuarioMapper;
 import com.crudUser.CadastroDeUsuarios.repository.UsuarioRepository;
+import com.crudUser.CadastroDeUsuarios.service.UsuarioService;
+import com.crudUser.CadastroDeUsuarios.util.FileUtils;
 import com.crudUser.CadastroDeUsuarios.util.constants.ErrorConstants;
-import com.crudUser.CadastroDeUsuarios.util.constants.FileConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.transaction.Transactional;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,7 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Page<UsuarioDTO> listarPagina(Pageable pageable) {
-        return this.repository.findAll(pageable).map(this.mapper::toDto);
+        return this.repository.findAllSemFoto(pageable).map(this.mapper::toDto);
     }
 
     @Override
@@ -70,6 +69,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return mapper.toDto(repository.save(mapper.toDomain(toEdit)));
+    }
+
+    @Override
+    public String buscaFoto(Long id) {
+        if(Objects.isNull(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.erroCampoObrigatorio("id"), null);
+        }
+        Usuario aux = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_REGISTRO_NAO_ENCONTRADO, null));
+        return (Objects.nonNull(aux.getFoto())) ? FileUtils.BYTE_ARRAY_TO_STRING_BASE64(aux.getFoto().getArquivo()) : "";
     }
 
     private void verificaTamanhoArquivo(Blob foto) throws SQLException {
