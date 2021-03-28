@@ -8,6 +8,9 @@ public class CadastroDeUsuariosApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CadastroDeUsuariosApplication.class, args);
+		System.out.println("=================================================\n" +
+				"================= SERVIÇO LEVANTADO!\n" +
+				"=================================================");
 	}
 
 }

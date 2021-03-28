@@ -1,5 +1,5 @@
 package com.crudUser.CadastroDeUsuarios.util.constants;
 
 public class FileConstants {
-    public static  Long DEZ_MB = 10485760L;
+    public static final String NOME_LISTAGEM_PDF = "Listagem_Geral.pdf";
 }

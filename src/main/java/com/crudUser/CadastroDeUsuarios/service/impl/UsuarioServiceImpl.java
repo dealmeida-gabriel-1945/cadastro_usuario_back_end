@@ -1,9 +1,15 @@
 package com.crudUser.CadastroDeUsuarios.service.impl;
 
 import com.crudUser.CadastroDeUsuarios.datashape.domain.Usuario;
+import com.crudUser.CadastroDeUsuarios.datashape.dto.ImpressaoDTO;
+import com.crudUser.CadastroDeUsuarios.datashape.dto.impressao.PdfConfigurationDTO;
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
+import com.crudUser.CadastroDeUsuarios.datashape.enumerations.ImpressaoEnum;
+import com.crudUser.CadastroDeUsuarios.datashape.enumerations.TemplateEnum;
 import com.crudUser.CadastroDeUsuarios.mapper.UsuarioMapper;
+import com.crudUser.CadastroDeUsuarios.repository.TemplateRepository;
 import com.crudUser.CadastroDeUsuarios.repository.UsuarioRepository;
+import com.crudUser.CadastroDeUsuarios.service.ImpressaoService;
 import com.crudUser.CadastroDeUsuarios.service.UsuarioService;
 import com.crudUser.CadastroDeUsuarios.util.FileUtils;
 import com.crudUser.CadastroDeUsuarios.util.constants.ErrorConstants;
@@ -22,7 +28,6 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,6 +39,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioMapper mapper;
     @Autowired
     private UsuarioRepository repository;
+    @Autowired
+    private ImpressaoService impressaoService;
+    @Autowired
+    private TemplateRepository templateRepository;
 
     @Override
     public UsuarioDTO cadastrar(UsuarioDTO toSave) throws IOException, SQLException {
@@ -85,4 +94,16 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_TAMANHO_ARQUIVO_EXCEDIDO_OU_FORMATO, null);
         }
     }
+
+    @Override
+    public ImpressaoDTO imprimirUsuarios() {
+        PdfConfigurationDTO configuracao = new PdfConfigurationDTO(
+            templateRepository.findById(TemplateEnum.PDF_LISTAGEM_GERAL.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_REGISTRO_NAO_ENCONTRADO, null)),
+            Boolean.TRUE
+        );
+        return impressaoService.montaPdf( configuracao, ImpressaoEnum.IMPRESSAO_GERAL.geraParametros(mapper.toImpressaoDto(repository.findAll())));
+    }
+
+
+
 }
