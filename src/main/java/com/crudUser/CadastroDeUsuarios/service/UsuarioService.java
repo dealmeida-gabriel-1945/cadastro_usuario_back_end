@@ -1,5 +1,6 @@
 package com.crudUser.CadastroDeUsuarios.service;
 
+import com.crudUser.CadastroDeUsuarios.datashape.dto.ImpressaoDTO;
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,4 +55,12 @@ public interface UsuarioService {
      *
      */
     String buscaFoto(Long id);
+
+    /**
+     * Gera um arquivo PDF contendo a foto, o nome e a data de nascimento de todos os usuários
+     *
+     * @return: O arquivo PDF com as informações dos usuários
+     *
+     */
+    ImpressaoDTO imprimirUsuarios();
 }

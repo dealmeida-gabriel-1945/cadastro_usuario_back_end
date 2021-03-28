@@ -1,9 +1,12 @@
 package com.crudUser.CadastroDeUsuarios.web;
 
+import com.crudUser.CadastroDeUsuarios.datashape.dto.ImpressaoDTO;
 import com.crudUser.CadastroDeUsuarios.datashape.dto.UsuarioDTO;
 import com.crudUser.CadastroDeUsuarios.service.UsuarioService;
+import com.crudUser.CadastroDeUsuarios.util.FileUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -83,4 +86,17 @@ public class UsuarioResource {
     public void listarPagina(@PathVariable("id") @NotNull(message = "O campo de id é obrigatório!") Long id){
         this.service.deleteUsuario(id);
     }
+
+    /**
+     * GET: /api/usuario/imprimir Gera um arquivo PDF contendo a foto, o nome e a data de nascimento de todos os usuários
+     *
+     * @return: O arquivo PDF com as informações dos usuários
+     *
+     */
+    @GetMapping("/imprimir")
+    public ResponseEntity<InputStreamResource> imprimirDocumento() {
+        ImpressaoDTO documento = service.imprimirUsuarios();
+        return FileUtils.output(documento.getBytesDocumnento(), documento.getNomeArquivo());
+    }
+
 }
