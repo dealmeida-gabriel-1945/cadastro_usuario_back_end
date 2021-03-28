@@ -19,18 +19,14 @@ public class Base64ImageProvider extends AbstractImageProvider {
     @Override
     public Image retrieve(String src) {
         try {
-            if (src.startsWith(PREFIX_DATA)) {
-                return retrieveFromBytes(src);
-            } else {
-                return retrieveFromPath(src);
-            }
+            return retrieveFromBytes(src);
         } catch (BadElementException | IOException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorConstants.ERRO_PROVIDERS, null);
         }
     }
 
     private Image retrieveFromBytes(String src) throws IOException, BadElementException {
-        byte[] img = Base64.decode(src.substring(PREFIX_DATA.length()));
+        byte[] img = Base64.decode(src);
         return Image.getInstance(img);
     }
 

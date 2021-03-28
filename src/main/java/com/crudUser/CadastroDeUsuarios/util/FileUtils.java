@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public final class FileUtils {
     private static final String HEADER_CACHE_CONTROL = "Cache-Control";
+    private static final String UTF_8 = "UTF-8";
     private static final String HEADER_CACHE_CONTROL_VALUE = "no-cache, no-store, must-revalidate";
     private static final String HEADER_PRAGMA = "Pragma";
     private static final String HEADER_PRAGMA_VALUE = "no-cache";
@@ -27,7 +28,7 @@ public final class FileUtils {
     public static String BYTE_ARRAY_TO_STRING_BASE64(byte[] foto){
         if(Objects.isNull(foto)) return null;
         try {
-            return new String(Base64.getEncoder().encode(foto));
+            return new String(Base64.getEncoder().encode(foto), UTF_8);
         }catch (Exception e){
             return null;
         }
