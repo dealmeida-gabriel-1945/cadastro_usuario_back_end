@@ -3,6 +3,8 @@
 
 ### Subir o banco
 Rode o comando na raiz do projeto:  ```docker-compode up``` e o container com o banco irá ser levantado.
+### Subir a API
+Adicione o parâmetro ```-Djps.track.ap.dependencies=false``` para não haver problemas de dependências do Mapstruct.
 
 ### Tecnologias utilizadas
 - [X] Spring boot - Para produzir a API restful;
